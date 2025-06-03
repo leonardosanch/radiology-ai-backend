@@ -1,0 +1,486 @@
+# ==============================================================================
+# RADIOLOGY AI BACKEND - GITIGNORE
+# Sistema de análisis automático de radiografías de tórax con TorchXRayVision
+# ==============================================================================
+
+# ==============================================================================
+# ARCHIVOS MÉDICOS SENSIBLES (CRÍTICO - NUNCA VERSIONAR)
+# ==============================================================================
+
+# Imágenes médicas y radiografías
+*.dcm
+*.dicom
+*.jpg
+*.jpeg
+*.png
+*.tiff
+*.tif
+*.bmp
+uploads/
+temp/
+radiografias/
+imagenes_medicas/
+pacientes/
+estudios/
+
+# Reportes médicos generados
+reportes/
+*.pdf
+medical_reports/
+analysis_results/
+
+# Datos médicos en cualquier formato
+*.csv
+*.xlsx
+*.json
+datos_medicos/
+patient_data/
+medical_data/
+
+# ==============================================================================
+# MODELOS DE IA Y CACHE
+# ==============================================================================
+
+# Modelos de TorchXRayVision descargados
+models/
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.pb
+torchxrayvision_models/
+model_cache/
+
+# Cache de PyTorch y TorchXRayVision
+.torchxrayvision/
+torch_cache/
+.cache/torchxrayvision/
+
+# Cache de Hugging Face (si se usara)
+.cache/huggingface/
+transformers_cache/
+
+# ==============================================================================
+# PYTHON Y ENTORNO VIRTUAL
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+.pytest/
+
+# Translations
+*.mo
+*.pot
+
+# Django/Flask stuff (si se agregan en futuro)
+*.log
+local_settings.py
+db.sqlite3
+
+# Scrapy stuff
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.venv
+venv/
+ENV/
+env/
+.venv/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# ==============================================================================
+# DOCKER Y CONTENEDORES
+# ==============================================================================
+
+# Docker volumes y datos persistentes
+docker_data/
+docker_volumes/
+postgres_data/
+redis_data/
+
+# Docker Compose overrides locales
+docker-compose.override.yml
+docker-compose.local.yml
+docker-compose.dev.yml
+
+# ==============================================================================
+# LOGS Y ARCHIVOS TEMPORALES
+# ==============================================================================
+
+# Logs de la aplicación
+logs/
+*.log
+*.log.*
+log_*
+radiology_ai.log*
+
+# Archivos temporales del sistema
+tmp/
+temp/
+temporary/
+.tmp/
+.temp/
+
+# Archivos de respaldo
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+
+# Archivos de lock
+*.lock
+.lock
+pip.lock
+
+# ==============================================================================
+# CONFIGURACIÓN LOCAL Y SECRETOS
+# ==============================================================================
+
+# Archivos de configuración local
+config.local.py
+settings.local.py
+local_config.py
+
+# Archivos de secretos y credenciales
+secrets/
+.secrets
+*.key
+*.pem
+*.p12
+*.pfx
+api_keys.txt
+credentials.json
+
+# Certificados SSL
+*.crt
+*.cert
+*.cer
+*.p7b
+*.p7c
+*.p7s
+
+# ==============================================================================
+# IDE Y EDITORES
+# ==============================================================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Atom
+.atom/
+
+# ==============================================================================
+# SISTEMA OPERATIVO
+# ==============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================================================
+# BASES DE DATOS Y PERSISTENCIA
+# ==============================================================================
+
+# SQLite
+*.sqlite
+*.sqlite3
+*.db
+
+# PostgreSQL
+*.sql
+postgres/
+
+# Redis
+*.rdb
+redis/
+
+# ==============================================================================
+# TESTING Y DESARROLLO
+# ==============================================================================
+
+# Archivos de test con datos médicos
+test_data/
+test_images/
+test_radiografias/
+sample_data/
+
+# Benchmark y performance
+benchmark_results/
+performance_tests/
+*.benchmark
+
+# Archivos de debug
+debug/
+debug.log
+debug_*
+
+# ==============================================================================
+# DOCUMENTACIÓN GENERADA
+# ==============================================================================
+
+# Documentación auto-generada
+docs/build/
+docs/_build/
+documentation/build/
+
+# Coverage reports
+htmlcov/
+coverage/
+
+# ==============================================================================
+# ESPECÍFICO DE LIFERAY (PARA INTEGRACIÓN)
+# ==============================================================================
+
+# Configuración de Liferay
+liferay/
+portal-ext.properties
+portal-setup-wizard.properties
+
+# ==============================================================================
+# HERRAMIENTAS DE MONITOREO
+# ==============================================================================
+
+# Prometheus metrics
+metrics/
+prometheus/
+
+# Grafana
+grafana/
+
+# ==============================================================================
+# ARCHIVOS DE CONFIGURACIÓN SENSIBLES
+# ==============================================================================
+
+# Configuración de producción
+production.env
+prod.env
+staging.env
+
+# Configuración de base de datos
+database.env
+db.env
+
+# Configuración de APIs externas
+api.env
+external_apis.env
+
+# ==============================================================================
+# ARCHIVOS GRANDES Y BINARIOS
+# ==============================================================================
+
+# Cualquier archivo mayor a 100MB (GitHub limit)
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Archivos de instalación
+*.exe
+*.msi
+*.deb
+*.rpm
+
+# ==============================================================================
+# COMENTARIOS Y NOTAS PERSONALES
+# ==============================================================================
+
+# Notas del desarrollador
+TODO.md
+NOTES.md
+notes.txt
+todo.txt
+personal_notes/
+
+# ==============================================================================
+# ARCHIVOS DE EJEMPLO QUE SÍ SE DEBEN VERSIONAR
+# ==============================================================================
+
+# IMPORTANTE: Estos archivos SÍ deben estar en el repositorio
+# (quitamos de .gitignore si existen)
+
+# !.env.example
+# !docker-compose.example.yml
+# !sample_radiography_anonymized.jpg
+# !test_normal_case.png
+# !README.md
+# !requirements.txt
+# !Dockerfile
+# !docker-compose.yml
+
+# ==============================================================================
+# CONFIGURACIÓN DE SEGURIDAD ADICIONAL
+# ==============================================================================
+
+# Archivos que podrían contener información médica sensible
+*paciente*
+*patient*
+*medico*
+*doctor*
+*hospital*
+*clinica*
+*clinic*
+
+# Archivos de configuración que podrían tener credenciales
+*secret*
+*password*
+*passwd*
+*credential*
+*token*
+
+# ==============================================================================
+# FINAL DEL ARCHIVO
+# ==============================================================================
+
+# Agregar aquí archivos específicos de tu instalación local

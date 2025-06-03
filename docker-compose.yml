@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  radiology-ai-backend:
+    build: .
+    container_name: radiology-ai-backend
+    ports:
+      - "8002:8002" # Mapear puerto 8002 del host al 8002 del contenedor
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8002
+      - DEBUG=true
+    volumes:
+      # Montar directorios para persistencia
+      - ./uploads:/app/uploads
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./temp:/app/temp
+    networks:
+      - radiology-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radiology-ai.rule=Host(`localhost`)"
+      - "traefik.http.routers.radiology-ai.service=radiology-ai"
+      - "traefik.http.services.radiology-ai.loadbalancer.server.port=8002"
+
+  # Opcional: Agregar Redis para cache en el futuro
+  redis:
+    image: redis:7-alpine
+    container_name: radiology-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - radiology-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+networks:
+  radiology-network:
+    driver: bridge
+
+volumes:
+  redis_data:

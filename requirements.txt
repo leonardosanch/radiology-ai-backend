@@ -1,0 +1,61 @@
+# =============================================================================
+# REQUIREMENTS OPTIMIZADO PARA RADIOLOGY AI BACKEND
+# =============================================================================
+
+# Framework web principal
+fastapi==0.109.0              # Framework web moderno para APIs REST
+uvicorn[standard]==0.27.0     # Servidor ASGI para ejecutar FastAPI
+
+# Manejo de archivos y datos
+python-multipart==0.0.7      # Soporte para upload de archivos multipart
+aiofiles==23.2.0              # Operaciones de archivos asíncronas
+python-dotenv==1.0.1          # Carga variables de entorno desde .env
+pydantic==2.6.1               # Validación de datos y configuración
+pydantic-settings==2.1.0      # AGREGADO: Settings para pydantic v2
+requests==2.31.0              # Cliente HTTP para descargas
+tqdm==4.66.1                  # Barras de progreso
+
+# Procesamiento de imágenes médicas
+pillow==10.2.0                # Biblioteca principal para manipulación de imágenes
+opencv-python==4.9.0.80      # Procesamiento avanzado de imágenes médicas
+scikit-image==0.22.0         # Algoritmos de procesamiento de imágenes científicas
+pydicom==2.4.4               # ACTUALIZADO: Procesamiento de archivos DICOM médicos
+python-magic==0.4.27         # Detección de tipos de archivo
+
+# Machine Learning y Arrays
+numpy==1.26.3                # Operaciones matemáticas y arrays
+torch==2.2.0                 # Framework de deep learning principal
+torchvision==0.17.0          # Transformaciones y modelos de visión computacional
+
+# MODELO PRINCIPAL: TorchXRayVision (NUEVO - CLAVE)
+torchxrayvision==1.0.1       # Modelos preentrenados validados clínicamente para radiografías
+
+# Procesamiento científico adicional
+scipy==1.11.4                # AGREGADO: Funciones científicas necesarias para TorchXRayVision
+
+# Visualización (opcional - solo si necesitas generar gráficos)
+matplotlib==3.8.3            # Visualización y guardado de imágenes
+
+# CORS y middleware
+
+
+
+# =============================================================================
+# DESARROLLO Y TESTING (opcional)
+# =============================================================================
+pytest==7.4.3                # Testing framework
+pytest-asyncio==0.21.1       # Testing asíncrono
+httpx==0.25.2                # Cliente HTTP para testing
+
+# =============================================================================
+# INSTALACIÓN
+# =============================================================================
+# 
+# Para actualizar desde tu requirements anterior:
+# pip install -r requirements.txt --upgrade
+# 
+# Para instalación limpia:
+# pip install -r requirements.txt
+#
+#
+#
