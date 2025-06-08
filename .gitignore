@@ -484,3 +484,7 @@ personal_notes/
 # ==============================================================================
 
 # Agregar aquí archivos específicos de tu instalación local
+# Allow model_registry.py inside models/
+!app/models/
+!app/models/base/
+!app/models/base/model_registry.py
