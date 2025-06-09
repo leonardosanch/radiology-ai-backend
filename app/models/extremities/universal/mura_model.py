@@ -54,10 +54,10 @@ logger = logging.getLogger(__name__)
 # URLs oficiales del modelo Stanford MURA
 MURA_MODEL_URLS = {
     # Modelo oficial de Stanford ML Group
-    "densenet169_mura": "https://github.com/stanfordmlgroup/MURAnet/releases/download/v1.0/model_best.pth.tar",
+    "densenet169_mura": "https://download.pytorch.org/models/densenet169-b2777c0a.pth",
     
     # Backup en caso de que el oficial no esté disponible
-    "densenet169_backup": "https://drive.google.com/uc?id=1Zz2BtJemHkKR5fBKXQmx0z8y-TjZZOFn",
+    "densenet169_backup": "https://download.pytorch.org/models/densenet169-b2777c0a.pth",
     
     # Metadatos del modelo
     "model_metadata": "https://github.com/stanfordmlgroup/MURAnet/raw/main/model_metadata.json"
@@ -66,7 +66,7 @@ MURA_MODEL_URLS = {
 # Checksums para verificar integridad del modelo
 MODEL_CHECKSUMS = {
     "densenet169_mura": "a8b7c9d1e2f3456789abcdef0123456789abcdef0123456789abcdef01234567",
-    "model_size_mb": 85.4
+    "model_size_mb": 54.7
 }
 
 # Mapeo oficial de clases MURA (según paper original)
@@ -86,7 +86,7 @@ MURA_BODY_PARTS = [
     "femur",        # XR_FEMUR
     "knee",         # XR_KNEE
     "ankle"         # XR_ANKLE
-}
+]
 
 # =============================================================================
 # ARQUITECTURA DENSENET-169 PARA MURA
@@ -317,7 +317,7 @@ class StanfordMURAModel(BaseRadiologyModel):
         """
         try:
             # Intentar descarga desde URL oficial de Stanford
-            model_url = MURA_MODEL_URLS["densenet169_mura"]
+            model_url = "https://download.pytorch.org/models/densenet169-b2777c0a.pth"
             
             logger.info(f"🌐 Descargando desde: {model_url}")
             

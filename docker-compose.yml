@@ -10,15 +10,32 @@ services:
       - HOST=0.0.0.0
       - PORT=8002
       - DEBUG=true
+      # Variables de entorno para el usuario
+      - PUID=1000
+      - PGID=1000
     volumes:
       # Montar directorios para persistencia
       - ./uploads:/app/uploads
       - ./models:/app/models
       - ./logs:/app/logs
       - ./temp:/app/temp
+      - ./cache:/app/cache
+      # Montar el .env file
+      - ./.env:/app/.env:ro
     networks:
       - radiology-network
     restart: unless-stopped
+    # SOLUCIÓN: Ejecutar como el usuario actual del host
+    user: "${UID:-1000}:${GID:-1000}"
+    # Comando que crea directorios y asigna permisos antes de iniciar
+    command: >
+      sh -c "
+        echo 'Configurando permisos...' &&
+        mkdir -p /app/logs /app/models /app/uploads /app/temp /app/cache &&
+        chmod -R 777 /app/logs /app/models /app/uploads /app/temp /app/cache &&
+        echo 'Iniciando aplicación...' &&
+        python -m uvicorn app.main:app --host 0.0.0.0 --port 8002 --reload
+      "
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
       interval: 30s
