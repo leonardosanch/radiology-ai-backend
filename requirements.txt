@@ -1,5 +1,6 @@
 # =============================================================================
-# REQUIREMENTS OPTIMIZADO PARA RADIOLOGY AI BACKEND
+# REQUIREMENTS OPTIMIZADO PARA RADIOLOGY AI BACKEND - VERSIÓN CORREGIDA
+# Ajustado para funcionar perfectamente con el código del proyecto
 # =============================================================================
 
 # Framework web principal
@@ -11,7 +12,7 @@ python-multipart==0.0.7      # Soporte para upload de archivos multipart
 aiofiles==23.2.0              # Operaciones de archivos asíncronas
 python-dotenv==1.0.1          # Carga variables de entorno desde .env
 pydantic==2.6.1               # Validación de datos y configuración
-pydantic-settings==2.1.0      # AGREGADO: Settings para pydantic v2
+pydantic-settings==2.1.0      # Settings para pydantic v2 (CRÍTICO)
 requests==2.31.0              # Cliente HTTP para descargas
 tqdm==4.66.1                  # Barras de progreso
 
@@ -19,43 +20,77 @@ tqdm==4.66.1                  # Barras de progreso
 pillow==10.2.0                # Biblioteca principal para manipulación de imágenes
 opencv-python==4.9.0.80      # Procesamiento avanzado de imágenes médicas
 scikit-image==0.22.0         # Algoritmos de procesamiento de imágenes científicas
-pydicom==2.4.4               # ACTUALIZADO: Procesamiento de archivos DICOM médicos
-python-magic==0.4.27         # Detección de tipos de archivo
+pydicom==2.4.4               # Procesamiento de archivos DICOM médicos
+python-magic==0.4.27         # Detección de tipos de archivo (CRÍTICO para validators.py)
 
 # Machine Learning y Arrays
 numpy==1.26.3                # Operaciones matemáticas y arrays
 torch==2.2.0                 # Framework de deep learning principal
 torchvision==0.17.0          # Transformaciones y modelos de visión computacional
 
-# MODELO PRINCIPAL: TorchXRayVision (NUEVO - CLAVE)
-torchxrayvision==1.0.1       # Modelos preentrenados validados clínicamente para radiografías
+# MODELO PRINCIPAL: TorchXRayVision (CLAVE PARA EL PROYECTO)
+torchxrayvision==1.0.1       # Modelos preentrenados validados clínicamente
 
 # Procesamiento científico adicional
-scipy==1.11.4                # AGREGADO: Funciones científicas necesarias para TorchXRayVision
+scipy==1.11.4                # Funciones científicas necesarias para TorchXRayVision
 
-# Visualización (opcional - solo si necesitas generar gráficos)
+# Visualización y análisis
 matplotlib==3.8.3            # Visualización y guardado de imágenes
 
-# CORS y middleware
+# DEPENDENCIAS CRÍTICAS AGREGADAS para tu código específico:
 
+# Para image_processor.py - Mejora de contraste médico
+scikit-learn==1.4.0          # Algoritmos ML adicionales
 
+# Para validators.py - Detección avanzada de archivos
+filetype==1.2.0              # Detección alternativa de tipos MIME
+
+# Para anatomical_classifier.py - Clasificación ML
+pandas==2.2.0                # Manipulación de datos (usado en clasificador)
+
+# Para el sistema de logging robusto
+colorlog==6.8.2              # Logging con colores para development
 
 # =============================================================================
-# DESARROLLO Y TESTING (opcional)
+# DESARROLLO Y TESTING
 # =============================================================================
 pytest==7.4.3                # Testing framework
 pytest-asyncio==0.21.1       # Testing asíncrono
 httpx==0.25.2                # Cliente HTTP para testing
 
 # =============================================================================
-# INSTALACIÓN
+# DEPENDENCIAS DEL SISTEMA (para referencia)
+# =============================================================================
+# Estas se instalan automáticamente en el Dockerfile:
+# - libmagic1 (para python-magic)
+# - libgl1-mesa-glx (para OpenCV)
+# - libglib2.0-0 (para OpenCV)
+# - curl (para health checks)
+
+# =============================================================================
+# INSTALACIÓN RECOMENDADA
 # =============================================================================
 # 
-# Para actualizar desde tu requirements anterior:
-# pip install -r requirements.txt --upgrade
-# 
-# Para instalación limpia:
-# pip install -r requirements.txt
+# 1. Para instalación limpia:
+#    pip install -r requirements.txt
 #
+# 2. Para actualizar desde versión anterior:
+#    pip install -r requirements.txt --upgrade
 #
+# 3. Para desarrollo (con dependencias de testing):
+#    pip install -r requirements.txt
 #
+# 4. Para producción optimizada:
+#    pip install -r requirements.txt --no-dev
+#
+# =============================================================================
+# NOTAS IMPORTANTES
+# =============================================================================
+#
+# - torchxrayvision==1.0.1 es CRÍTICO para todos los modelos
+# - python-magic necesita libmagic1 del sistema
+# - pydantic-settings es REQUERIDO para config.py
+# - pydicom==2.4.4 para soporte DICOM completo
+# - scipy es dependencia oculta de torchxrayvision
+#
+# =============================================================================

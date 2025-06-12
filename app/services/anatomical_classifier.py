@@ -336,21 +336,21 @@ class AnatomicalClassifier:
                 "typical_urgency": "routine"
             },
             AnatomicalRegion.HAND.value: {
-                "primary_models": ["mura", "boneage"],
+                "primary_models": ["torchxrayvision"],
                 "secondary_models": [],
                 "ensemble_strategy": "specialist_priority",
                 "clinical_priority": "medium",
                 "typical_urgency": "routine"
             },
             AnatomicalRegion.HIP.value: {
-                "primary_models": ["mura", "hip_fracture"],
+                "primary_models": ["torchxrayvision"],
                 "secondary_models": [],
                 "ensemble_strategy": "max_sensitivity",
                 "clinical_priority": "high",
                 "typical_urgency": "emergency"
             },
             AnatomicalRegion.KNEE.value: {
-                "primary_models": ["mura", "knee_oa"],
+                "primary_models": ["torchxrayvision", "knee_oa"],
                 "secondary_models": [],
                 "ensemble_strategy": "weighted_average",
                 "clinical_priority": "medium",
@@ -358,21 +358,21 @@ class AnatomicalClassifier:
             },
             AnatomicalRegion.SPINE.value: {
                 "primary_models": ["spine_fracture"],
-                "secondary_models": ["mura"],
+                "secondary_models": ["torchxrayvision"],
                 "ensemble_strategy": "max_sensitivity",
                 "clinical_priority": "high",
                 "typical_urgency": "emergency"
             },
             # Mapeo para otras extremidades a MURA como universal
             AnatomicalRegion.SHOULDER.value: {
-                "primary_models": ["mura"],
+                "primary_models": ["torchxrayvision"],
                 "secondary_models": [],
                 "ensemble_strategy": "single",
                 "clinical_priority": "medium",
                 "typical_urgency": "routine"
             },
             AnatomicalRegion.ANKLE.value: {
-                "primary_models": ["mura"],
+                "primary_models": ["torchxrayvision"],
                 "secondary_models": [],
                 "ensemble_strategy": "single",
                 "clinical_priority": "medium",
@@ -748,7 +748,7 @@ class AnatomicalClassifier:
             region_config = self.region_to_models.get(region.value, {})
             
             # Obtener modelos recomendados
-            recommended_models = region_config.get("primary_models", ["mura"])  # Fallback a MURA
+            recommended_models = region_config.get("primary_models", ["torchxrayvision"])  # Fallback a MURA
             
             return AnatomicalDetection(
                 region=region,
@@ -849,7 +849,7 @@ class AnatomicalClassifier:
             confidence=0.1,
             view_position=ViewPosition.UNKNOWN,
             confidence_level=DetectionConfidence.UNCERTAIN,
-            recommended_models=["mura"],  # MURA como fallback universal
+            recommended_models=["torchxrayvision"],  # MURA como fallback universal
             metadata_source="fallback",
             image_features=self._extract_image_features(image),
             clinical_priority="medium",
