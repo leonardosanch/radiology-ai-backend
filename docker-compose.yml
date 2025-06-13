@@ -5,37 +5,32 @@ services:
     build: .
     container_name: radiology-ai-backend
     ports:
-      - "8002:8002" # Mapear puerto 8002 del host al 8002 del contenedor
+      - "8002:8002"
     environment:
       - HOST=0.0.0.0
       - PORT=8002
       - DEBUG=true
-      # Variables de entorno para el usuario
-      - PUID=1000
-      - PGID=1000
+      # Variables críticas para TorchXRayVision
+      - TORCHXRAYVISION_CACHE_DIR=/app/models/torchxrayvision
+      - XDG_CACHE_HOME=/app/.cache
+      - HOME=/app
+      # Variables de usuario (comentadas para máxima compatibilidad)
+      # - PUID=1000
+      # - PGID=1000
     volumes:
-      # Montar directorios para persistencia
+      # Volúmenes para persistencia de datos
       - ./uploads:/app/uploads
       - ./models:/app/models
       - ./logs:/app/logs
       - ./temp:/app/temp
       - ./cache:/app/cache
-      # Montar el .env file
+      # Archivo de configuración
       - ./.env:/app/.env:ro
     networks:
       - radiology-network
     restart: unless-stopped
-    # SOLUCIÓN: Ejecutar como el usuario actual del host
-    user: "${UID:-1000}:${GID:-1000}"
-    # Comando que crea directorios y asigna permisos antes de iniciar
-    command: >
-      sh -c "
-        echo 'Configurando permisos...' &&
-        mkdir -p /app/logs /app/models /app/uploads /app/temp /app/cache &&
-        chmod -R 777 /app/logs /app/models /app/uploads /app/temp /app/cache &&
-        echo 'Iniciando aplicación...' &&
-        python -m uvicorn app.main:app --host 0.0.0.0 --port 8002 --reload
-      "
+    # Usuario comentado para evitar problemas de permisos
+    # user: "${UID:-1000}:${GID:-1000}"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
       interval: 30s
@@ -48,7 +43,6 @@ services:
       - "traefik.http.routers.radiology-ai.service=radiology-ai"
       - "traefik.http.services.radiology-ai.loadbalancer.server.port=8002"
 
-  # Opcional: Agregar Redis para cache en el futuro
   redis:
     image: redis:7-alpine
     container_name: radiology-redis

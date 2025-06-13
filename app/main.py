@@ -93,7 +93,7 @@ def initialize_ai_system() -> bool:
         )
         
         # Cargar todos los modelos disponibles
-        success = ai_system.load_model("intelligent_router")
+        success = ai_system.load_model("torchxrayvision")
         
         if success:
             # Obtener información del sistema inicializado

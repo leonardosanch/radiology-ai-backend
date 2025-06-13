@@ -1150,7 +1150,7 @@ class AdvancedMedicalAIManager:
         
         logger.info(f"AdvancedMedicalAIManager inicializado - Dispositivo: {device}")
     
-    def load_model(self, model_name: str = "intelligent_router") -> bool:
+    def load_model(self, model_name: str = "torchxrayvision") -> bool:
         """
         Carga el router inteligente con todos los modelos.
         

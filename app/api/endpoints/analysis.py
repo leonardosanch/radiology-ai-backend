@@ -12,7 +12,7 @@ import uuid
 from ...utils.validators import validate_upload_file, get_file_info
 from ...services.image_processor import ImageProcessor
 from ...services.report_generator import ReportGenerator
-from ...models.ai_model import AIModelManager
+from ...models.torax_model import AIModelManager
 from ...core.config import settings
 
 # Configurar logging para este módulo
