@@ -222,55 +222,62 @@ class CheXNetModel:
     
     def get_pneumonia_analysis(self, predictions: Dict[str, float]) -> Dict[str, any]:
         """
-        Análisis específico de neumonía (especialidad de CheXNet).
+        Análisis clínico de neumonía basado en predicciones multiclase.
         
         Args:
-            predictions: Predicciones del modelo
-            
+            predictions: Diccionario de predicciones del modelo
+        
         Returns:
-            Dict: Análisis detallado de neumonía
+            Dict: Score compuesto, nivel de riesgo y recomendaciones clínicas
         """
         pneumonia_prob = predictions.get("Pneumonia", 0.0)
-        
-        # Factores relacionados con neumonía
+
+        # Hallazgos relacionados con neumonía y sus pesos clínicos
         related_findings = {
-            "consolidation": predictions.get("Consolidation", 0.0),
-            "infiltration": predictions.get("Infiltration", 0.0),
-            "lung_opacity": predictions.get("Lung Opacity", 0.0),
-            "atelectasis": predictions.get("Atelectasis", 0.0)
+            "Consolidation": predictions.get("Consolidation", 0.0),
+            "Infiltration": predictions.get("Infiltration", 0.0),
+            "Lung Opacity": predictions.get("Lung Opacity", 0.0),
+            "Atelectasis": predictions.get("Atelectasis", 0.0)
         }
-        
-        # Score compuesto de neumonía
+        weights = {
+            "Consolidation": 0.4,
+            "Infiltration": 0.25,
+            "Lung Opacity": 0.25,
+            "Atelectasis": 0.1
+        }
+
+        # Score compuesto
         composite_score = pneumonia_prob
-        for finding, prob in related_findings.items():
-            composite_score += prob * 0.3  # Peso menor para hallazgos relacionados
-        
-        composite_score = min(composite_score, 1.0)
-        
-        # Clasificación de riesgo
-        if composite_score < 0.3:
+        for key, value in related_findings.items():
+            composite_score += value * weights.get(key, 0)
+
+        composite_score = round(min(composite_score, 1.0), 4)
+
+        # Clasificación clínica
+        if composite_score < 0.25:
             risk_level = "low"
-            recommendation = "Seguimiento rutinario"
+            recommendation = "No evidencia significativa. Seguimiento rutinario."
             urgency = "routine"
         elif composite_score < 0.6:
             risk_level = "moderate"
-            recommendation = "Evaluación clínica recomendada"
+            recommendation = "Hallazgos sugestivos. Evaluación médica recomendada."
             urgency = "priority"
         else:
             risk_level = "high"
-            recommendation = "Evaluación médica urgente - posible neumonía"
+            recommendation = "Alta probabilidad de neumonía. Evaluación urgente necesaria."
             urgency = "urgent"
-        
+
         return {
-            "pneumonia_probability": pneumonia_prob,
+            "pneumonia_probability": round(pneumonia_prob, 4),
             "composite_pneumonia_score": composite_score,
-            "related_findings": related_findings,
+            "related_findings": {k.lower(): round(v, 4) for k, v in related_findings.items()},
             "risk_level": risk_level,
             "recommendation": recommendation,
             "urgency": urgency,
-            "confidence": min(composite_score * 1.2, 1.0),
+            "confidence": min(round(composite_score * 1.2, 4), 1.0),
             "model_variant": self.variant
         }
+
     
     def compare_with_torchxrayvision(self, predictions: Dict[str, float], 
                                    txv_predictions: Dict[str, float]) -> Dict[str, any]:
@@ -435,33 +442,60 @@ class CheXNetManager:
             }
         }
     
-    def predict_with_ensemble(self, image: np.ndarray, 
-                            txv_predictions: Dict[str, float]) -> Dict[str, any]:
+    def predict_with_ensemble(self, image: np.ndarray,txv_predictions: Dict[str, float]) -> Dict[str, any]:
         """
-        Predicción con ensemble TorchXRayVision + CheXNet.
+        Ensemble entre CheXNet y TorchXRayVision, optimizado para neumonía.
         
         Args:
-            image: Imagen como array numpy
-            txv_predictions: Predicciones de TorchXRayVision
-            
+            image: Imagen como np.array
+            txv_predictions: Predicciones TorchXRayVision
+
         Returns:
-            Dict: Predicciones ensemble y análisis comparativo
+            dict: Resultados combinados y análisis clínico
         """
         chex_predictions = self.model.predict(image)
-        comparison = self.model.compare_with_torchxrayvision(chex_predictions, txv_predictions)
-        pneumonia_analysis = self.model.get_pneumonia_analysis(comparison["ensemble_predictions"])
+        ensemble = {}
         
+        # Patologías respiratorias clave para ponderación
+        respiratory_keys = ["Pneumonia", "Consolidation", "Infiltration", 
+                            "Atelectasis", "Lung Opacity"]
+
+        for key in chex_predictions:
+            chex_val = chex_predictions.get(key, 0.0)
+            txv_val = txv_predictions.get(key, 0.0)
+
+            if key in respiratory_keys:
+                # Ponderación: CheXNet tiene más peso
+                combined = (0.7 * chex_val) + (0.3 * txv_val)
+            else:
+                # Ponderación neutra
+                combined = (0.5 * chex_val) + (0.5 * txv_val)
+
+            ensemble[key] = round(combined, 4)
+
+        # Análisis compuesto específico de neumonía
+        pneumonia_analysis = self.model.get_pneumonia_analysis(ensemble)
+
         return {
             "chexnet_predictions": chex_predictions,
-            "ensemble_predictions": comparison["ensemble_predictions"],
-            "model_comparison": comparison,
+            "ensemble_predictions": ensemble,
+            "model_comparison": {
+                "chexnet": chex_predictions,
+                "torchxrayvision": txv_predictions,
+                "ensemble_predictions": ensemble
+            },
             "pneumonia_analysis": pneumonia_analysis,
             "model_info": {
                 "ensemble": True,
                 "models": ["chexnet", "torchxrayvision"],
-                "primary_model": "chexnet"
+                "primary_model": "chexnet",
+                "weighting": {
+                    "respiratory_keys": "70% chexnet / 30% torchxray",
+                    "others": "50% / 50%"
+                }
             }
         }
+
     
     def get_model_info(self) -> Dict[str, any]:
         """
